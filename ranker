@@ -1,0 +1,40 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Jun 16 00:25:01 2018
+
+@author: 7oso
+"""
+from scipy.stats import rankdata
+import numpy as np 
+
+import os 
+
+#array = np.random.uniform(0,1,(3,3))
+#array= array.round(1)
+
+
+array= np.genfromtxt('algos.csv',delimiter=',')
+print (array)
+    
+f=open('result.csv','ab')
+
+      
+for i in range (0,len(array)):
+    A= 100-array[i,:]
+    array[i,:]=      rankdata(A, method='dense').astype(int)
+
+    #B=sorted(range(len(A)),key=lambda x:A[x],reverse=False)
+    #C=sorted(range(len(A)),key=lambda x:B[x])
+    #plus= [x+1 for x in C]
+    #array[i,:]=plus
+
+B=np.sum(array,0) #Find total ranks
+
+x=np.concatenate((array,[B]),axis=0)
+
+
+np.savetxt(f, x, delimiter=',',fmt='%u')
+
+
+
+f.close()
